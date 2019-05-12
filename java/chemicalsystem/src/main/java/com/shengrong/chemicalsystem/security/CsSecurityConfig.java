@@ -14,6 +14,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -23,17 +25,37 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 @EnableWebSecurity
 public class CsSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private AuthenticationSuccessHandler authenticationSuccessHandler;
-    @Autowired
-    private AuthenticationFailureHandler authenticationFailureHandler;
-    @Autowired
-    private LogoutSuccessHandler logoutSuccessHandler;
-    @Autowired
-    private CsTokenFilter csTokenFilter;
-    @Autowired
-    private AuthenticationProvider csSecurityProvider;
+    //登录成功
+    private final AuthenticationSuccessHandler authenticationSuccessHandler;
+    //登录失败
+    private final AuthenticationFailureHandler authenticationFailureHandler;
+    //注销成功
+    private final LogoutSuccessHandler logoutSuccessHandler;
+    //过滤器
+    private final CsTokenFilter csTokenFilter;
+    //认证
+    private final AuthenticationProvider csSecurityProvider;
+//    认证后权限不足
+    private final AccessDeniedHandler accessDeniedHandler;
+    //未认证访问有权限的
+    private final AuthenticationEntryPoint authenticationEntryPoint;
 
+    @Autowired
+    public CsSecurityConfig(AuthenticationProvider csSecurityProvider,
+                            AuthenticationSuccessHandler authenticationSuccessHandler,
+                            AuthenticationFailureHandler authenticationFailureHandler,
+                            LogoutSuccessHandler logoutSuccessHandler,
+                            CsTokenFilter csTokenFilter,
+                            AccessDeniedHandler accessDeniedHandler,
+                            AuthenticationEntryPoint authenticationEntryPoint) {
+        this.csSecurityProvider = csSecurityProvider;
+        this.authenticationSuccessHandler = authenticationSuccessHandler;
+        this.authenticationFailureHandler = authenticationFailureHandler;
+        this.logoutSuccessHandler = logoutSuccessHandler;
+        this.csTokenFilter = csTokenFilter;
+        this.accessDeniedHandler = accessDeniedHandler;
+        this.authenticationEntryPoint = authenticationEntryPoint;
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -48,7 +70,8 @@ public class CsSecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests()
-                .antMatchers("/**").permitAll();
+                .antMatchers("/**").permitAll()
+                .anyRequest().authenticated();
 
         //登录成功
         http.formLogin()
@@ -61,14 +84,18 @@ public class CsSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl(CommonConstant.LOGOUT)//注销路径
                 .logoutSuccessHandler(logoutSuccessHandler);//注销成功
 
+        //未认证访问有权限的
+        http.httpBasic()
+                .authenticationEntryPoint(authenticationEntryPoint);
+
+        //已经认证，没有权限
+        http.exceptionHandling()
+                .accessDeniedHandler(accessDeniedHandler);
+
+
+
         //JWT过滤器
         http.addFilterBefore(csTokenFilter, UsernamePasswordAuthenticationFilter.class);
-    }
-
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
     }
 
 }

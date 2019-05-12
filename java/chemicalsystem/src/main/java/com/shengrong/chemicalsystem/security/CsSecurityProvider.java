@@ -1,28 +1,22 @@
 package com.shengrong.chemicalsystem.security;
 
-import com.shengrong.chemicalsystem.constant.enums.ExceptionCodeEnum;
-import com.shengrong.chemicalsystem.ecxeption.ChemicalException;
-import com.shengrong.chemicalsystem.model.entity.UserInfoEntity;
-import com.shengrong.chemicalsystem.service.UserInfoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
+@Configuration
 public class CsSecurityProvider extends DaoAuthenticationProvider {
 
 
-    @Autowired
-    private UserInfoService userInfoService;
-
-    public CsSecurityProvider(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {
-        setPasswordEncoder(passwordEncoder);
+    public CsSecurityProvider(UserDetailsService userDetailsService) {
+        setPasswordEncoder(new BCryptPasswordEncoder());
         setUserDetailsService(userDetailsService);
     }
 
