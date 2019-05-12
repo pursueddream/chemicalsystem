@@ -84,7 +84,7 @@ public class CommonAop {
                     request.getMethod(),
                     JsonUtils.toString(params),
                     className + "." + methodName,
-                    JsonUtils.toString(Arrays.asList(point.getArgs())));
+                    point.getArgs());
         }
     }
 

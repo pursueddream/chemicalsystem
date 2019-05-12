@@ -6,11 +6,16 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.shengrong.chemicalsystem.controller.request.PageRequest;
 import com.shengrong.chemicalsystem.controller.response.PageResult;
 import com.shengrong.chemicalsystem.dao.PersonDao;
+import com.shengrong.chemicalsystem.model.dto.ExcelDTO;
 import com.shengrong.chemicalsystem.model.entity.PersonEntity;
+import com.shengrong.chemicalsystem.utils.ExcelUtils;
 import com.shengrong.chemicalsystem.utils.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -93,6 +98,23 @@ public class PersonController {
     public Object update (@PathVariable String id) {
         personDao.deleteById(id);
         return ResponseUtils.getDefResponse();
+    }
+
+
+    @RequestMapping(method = RequestMethod.GET, value = "/test")
+    public void testExcel (HttpServletResponse response) throws Exception {
+        ExcelDTO dto = new ExcelDTO();
+        dto.setTagName("xxx1");
+        dto.setTitles(Arrays.asList("ID", "姓名", "年龄"));
+
+        List<List<String>> data = new ArrayList<>();
+        data.add(Arrays.asList("1", "张三", "20"));
+        data.add(Arrays.asList("2", "李四", "30"));
+
+        dto.setRows(data);
+
+        ExcelUtils.exportExcel(response, "test", dto);
+
     }
 
 }
