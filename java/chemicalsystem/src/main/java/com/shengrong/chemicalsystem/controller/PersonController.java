@@ -106,7 +106,7 @@ public class PersonController {
      * @throws Exception Exception
      */
     @RequestMapping(method = RequestMethod.GET, value = "/test")
-    public void testExcel (HttpServletResponse response) throws Exception {
+    public String testExcel (HttpServletResponse response) throws Exception {
         ExcelDTO dto = new ExcelDTO();
         dto.setTagName("xxx1");
         dto.setTitles(Arrays.asList("ID", "姓名", "年龄"));
@@ -116,8 +116,8 @@ public class PersonController {
         data.add(Arrays.asList("2", "李四", "30"));
 
         dto.setRows(data);
-
-        ExcelUtils.exportExcel(response, "test", dto);
+        return "SUCCESS";
+//        ExcelUtils.exportExcel(response, "test", dto);
 
     }
 

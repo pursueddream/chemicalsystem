@@ -1,9 +1,7 @@
 package com.shengrong.chemicalsystem.security;
 
 import com.shengrong.chemicalsystem.constant.CommonConstant;
-import com.shengrong.chemicalsystem.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -11,9 +9,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -35,7 +30,7 @@ public class CsSecurityConfig extends WebSecurityConfigurerAdapter {
     private final CsTokenFilter csTokenFilter;
     //认证
     private final AuthenticationProvider csSecurityProvider;
-//    认证后权限不足
+    //认证后权限不足
     private final AccessDeniedHandler accessDeniedHandler;
     //未认证访问有权限的
     private final AuthenticationEntryPoint authenticationEntryPoint;
@@ -70,8 +65,9 @@ public class CsSecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests()
-                .antMatchers("/**").permitAll()
-                .anyRequest().authenticated();
+                .antMatchers("/test").permitAll()
+//                .antMatchers("/person/**").hasRole("VIP")
+                .anyRequest().access("@accessServiceImpl.accessAvailable(request)");
 
         //登录成功
         http.formLogin()
@@ -91,8 +87,6 @@ public class CsSecurityConfig extends WebSecurityConfigurerAdapter {
         //已经认证，没有权限
         http.exceptionHandling()
                 .accessDeniedHandler(accessDeniedHandler);
-
-
 
         //JWT过滤器
         http.addFilterBefore(csTokenFilter, UsernamePasswordAuthenticationFilter.class);

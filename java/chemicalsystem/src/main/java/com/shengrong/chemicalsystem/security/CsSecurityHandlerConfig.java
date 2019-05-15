@@ -6,7 +6,8 @@ import com.shengrong.chemicalsystem.constant.enums.ExceptionCodeEnum;
 import com.shengrong.chemicalsystem.model.dto.LoginDTO;
 import com.shengrong.chemicalsystem.model.dto.ResponseDTO;
 import com.shengrong.chemicalsystem.model.entity.UserInfoEntity;
-import com.shengrong.chemicalsystem.service.TokenInfoService;
+import com.shengrong.chemicalsystem.utils.TokenUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -14,15 +15,10 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-
+@Slf4j
 @Configuration
 public class CsSecurityHandlerConfig {
 
-    private final TokenInfoService tokenInfoService;
-
-    public CsSecurityHandlerConfig(TokenInfoService tokenInfoService) {
-        this.tokenInfoService = tokenInfoService;
-    }
 
     /**
      * 认证成功
@@ -34,12 +30,12 @@ public class CsSecurityHandlerConfig {
             //登录对象
             UserInfoEntity principal = (UserInfoEntity)authentication.getPrincipal();
             //生成token
-            tokenInfoService.save(principal.getToken());
-
             response.setContentType(CommonConstant.JSON_CONTENT_TYPE);
             LoginDTO dto = new LoginDTO();
+            String token = TokenUtils.createToken(principal.getId());
+            log.info("token={}", token);
+            dto.setToken(token);
             dto.setDesc("登录成功");
-            dto.setToken("token........test");
             response.getWriter().write(JSON.toJSONString(dto));
             response.getWriter().flush();
         });
@@ -68,7 +64,7 @@ public class CsSecurityHandlerConfig {
     @Bean
     public LogoutSuccessHandler logoutSuccessHandler(){
         return ((request, response, authentication) -> {
-            String token = CsTokenFilter.getToken(request);
+
             // 删除token  todo
             ResponseDTO dto = new ResponseDTO();
             dto.setCode("退出成功");
@@ -105,8 +101,8 @@ public class CsSecurityHandlerConfig {
     public AuthenticationEntryPoint authenticationEntryPoint(){
         return ((request, response, authException) -> {
             ResponseDTO dto = new ResponseDTO();
-            dto.setCode("未进行身份认证");
-            dto.setDesc("未进行身份认证");
+            dto.setCode("未登录");
+            dto.setDesc("未登录");
             String jsonString = JSON.toJSONString(dto);
             response.setContentType(CommonConstant.JSON_CONTENT_TYPE);
             response.getWriter().write(jsonString);

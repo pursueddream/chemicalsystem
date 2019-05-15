@@ -3,6 +3,7 @@ package com.shengrong.chemicalsystem.security;
 import com.shengrong.chemicalsystem.constant.CommonConstant;
 import com.shengrong.chemicalsystem.model.entity.UserInfoEntity;
 import com.shengrong.chemicalsystem.service.UserInfoService;
+import com.shengrong.chemicalsystem.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,29 +21,28 @@ import java.io.IOException;
 @Slf4j
 public class CsTokenFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private UserInfoService userInfoService;
+    private final UserInfoService userInfoServiceImpl;
+
+    public CsTokenFilter(UserInfoService userInfoServiceImpl) {
+        this.userInfoServiceImpl = userInfoServiceImpl;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        String token = getToken(request);
+        String token = TokenUtils.getToken(request);
         log.info("token={}", token);
         //认证
         if (!StringUtils.isEmpty(token)) {
-            UserInfoEntity userInfo = userInfoService.getUserInfoEntityByToken(token);
-            if (userInfo != null) {
-                //添加认证
-                UsernamePasswordAuthenticationToken authentication
-                        = new UsernamePasswordAuthenticationToken(userInfo, null, userInfo.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
+            //解密token
+            String userInfoId = TokenUtils.getIdByToken(token);
+            UserInfoEntity userInfoEntity = userInfoServiceImpl.getUserInfoEntityById(userInfoId);
+            UsernamePasswordAuthenticationToken authentication
+                    = new UsernamePasswordAuthenticationToken(userInfoEntity, null, userInfoEntity.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         //放行
         chain.doFilter(request, response);
-
     }
 
-    public static String getToken(HttpServletRequest request) {
-        return request.getHeader(CommonConstant.AUTHORIZATION);
-    }
+
 }

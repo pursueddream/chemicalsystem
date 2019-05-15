@@ -25,9 +25,6 @@ public class UserInfoEntity extends BaseEntity implements UserDetails, Serializa
     @TableField("password")
     private String password;
 
-    @TableField("token")
-    private String token;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("VIP");
