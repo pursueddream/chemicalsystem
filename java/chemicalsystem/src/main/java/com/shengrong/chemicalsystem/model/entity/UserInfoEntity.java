@@ -2,6 +2,7 @@ package com.shengrong.chemicalsystem.model.entity;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.shengrong.chemicalsystem.model.entity.commom.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
-
 @Configuration
 @Slf4j
 public class CsSecurityProvider extends DaoAuthenticationProvider {
@@ -33,13 +32,21 @@ public class CsSecurityProvider extends DaoAuthenticationProvider {
         //数据库  密码
         String dbPassword = userDetails.getPassword();
 
-        //前端密码
+        //前端密码(密文)
         String password = authentication.getCredentials().toString();
-
-        if(!dbPassword.equals(password)) {
+        //前端解密(铭文)
+        String inscriptionPassword;
+        try {
+            //正式环境中放开
+//            inscriptionPassword = RSAUtils.decrypt(password);
+            inscriptionPassword = password;
+        } catch (Exception e) {
+            log.error("账号或者密码错误", e);
             throw new BadCredentialsException("账号或者密码错误");
         }
-
-
+        //数据库密码与铭文密码进行校验
+        if(bCryptPasswordEncoder.matches(inscriptionPassword, password)) {
+            throw new BadCredentialsException("账号或者密码错误");
+        }
     }
 }

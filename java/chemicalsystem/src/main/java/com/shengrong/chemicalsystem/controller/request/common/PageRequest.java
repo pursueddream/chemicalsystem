@@ -1,4 +1,4 @@
-package com.shengrong.chemicalsystem.controller.request;
+package com.shengrong.chemicalsystem.controller.request.common;
 
 import lombok.Getter;
 import lombok.NonNull;

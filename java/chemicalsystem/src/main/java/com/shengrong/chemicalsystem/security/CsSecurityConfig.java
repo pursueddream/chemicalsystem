@@ -65,9 +65,9 @@ public class CsSecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests()
-                .antMatchers("/test").permitAll()
+//                .antMatchers("/user/**").permitAll()
 //                .antMatchers("/person/**").hasRole("VIP")
-                .anyRequest().access("@accessServiceImpl.accessAvailable(request)");
+                .anyRequest().access("@accessServiceImpl.accessAvailable(request, authentication)");
 
         //登录成功
         http.formLogin()

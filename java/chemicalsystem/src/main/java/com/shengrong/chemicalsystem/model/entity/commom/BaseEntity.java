@@ -1,4 +1,4 @@
-package com.shengrong.chemicalsystem.model.entity;
+package com.shengrong.chemicalsystem.model.entity.commom;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @ToString
-public class BaseEntity {
+public class BaseEntity{
 
     //主键
     @TableId("id")

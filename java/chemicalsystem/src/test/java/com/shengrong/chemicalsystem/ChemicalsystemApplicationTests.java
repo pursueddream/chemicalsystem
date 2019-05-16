@@ -11,11 +11,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class ChemicalsystemApplicationTests {
 
     public static void main(String[] args) throws Exception {
-        String encoded = RSAUtils.encoded("GGGGGG");
+        String encoded = RSAUtils.encoded("admin");
         System.out.println(encoded);
-
-        String encoded1 = RSAUtils.decrypt(encoded);
-        System.out.println(encoded1);
+//        "EAA78wDwjdH1mtuhpsxOek+23s06EaIAyEP2pSGWPGQXZd1tlZ7qnxiw3XJ6nqLmUSyMm7GCvA/mkMbJb6LFadgt/NYvJ6WV7sKGsxa+Yq8Gzc327hal+EbjXkhfSEH+96kubhm1DwAH+PtzkA7ZXUSy6RCZ4bUnQcD3EbA9PBM="
     }
 
     @Test

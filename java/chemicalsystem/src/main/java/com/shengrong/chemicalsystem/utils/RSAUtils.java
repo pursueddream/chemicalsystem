@@ -40,7 +40,7 @@ public class RSAUtils {
     }
 
     public static String decrypt (String value) throws InvalidKeyException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, IllegalBlockSizeException {
-        Cipher cipher = Cipher.getInstance("RSA");
+        Cipher cipher = Cipher.getInstance(RSA);
         cipher.init(Cipher.DECRYPT_MODE, PRIVATE_KEY);
         byte[] bytes = Base64.decodeBase64(value);
         byte[] result = cipher.doFinal(bytes);
