@@ -35,7 +35,7 @@ public class CsTokenFilter extends OncePerRequestFilter {
         if (!StringUtils.isEmpty(token)) {
             //解密token
             String userInfoId = TokenUtils.getIdByToken(token);
-            UserInfoEntity userInfoEntity = userInfoServiceImpl.getUserInfoEntityById(userInfoId);
+            UserInfoEntity userInfoEntity = userInfoServiceImpl.queryById(userInfoId);
             UsernamePasswordAuthenticationToken authentication
                     = new UsernamePasswordAuthenticationToken(userInfoEntity, null, userInfoEntity.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);

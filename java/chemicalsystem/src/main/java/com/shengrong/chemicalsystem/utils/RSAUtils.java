@@ -47,5 +47,9 @@ public class RSAUtils {
         return new String(result);
     }
 
+    public static PublicKey getPublicKey(){
+        return PUBLIC_KEY;
+    }
+
 
 }

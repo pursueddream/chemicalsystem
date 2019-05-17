@@ -7,9 +7,14 @@ spring:
     username: root
     password: 1234
     driverClassName: com.mysql.cj.jdbc.Driver
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: XUEKE274
+    password: admin
 
 mybatis:
   mapperLocations: classpath:mapper/*.xml
 logging:
   config: classpath:config/logback.xml
-#  path: /var/log/chemicalsystem
+
