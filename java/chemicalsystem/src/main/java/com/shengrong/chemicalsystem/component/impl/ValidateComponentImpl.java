@@ -1,7 +1,6 @@
 package com.shengrong.chemicalsystem.component.impl;
 
 import com.shengrong.chemicalsystem.component.ValidateComponent;
-import com.shengrong.chemicalsystem.constant.enums.ExceptionCodeEnum;
 import com.shengrong.chemicalsystem.ecxeption.ChemicalException;
 import org.springframework.stereotype.Component;
 

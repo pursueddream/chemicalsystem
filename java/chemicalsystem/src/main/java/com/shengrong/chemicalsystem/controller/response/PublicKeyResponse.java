@@ -8,4 +8,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class PublicKeyResponse {
+    private String exponent;
+    private String modulus;
 }

@@ -64,8 +64,6 @@ public class CommonAop {
     }
 
     private void paramsLog(ProceedingJoinPoint point, String className, String methodName) {
-        //类名 方法名
-
         RequestAttributes ra = RequestContextHolder.getRequestAttributes();
         if (ra != null) {
             ServletRequestAttributes sra = (ServletRequestAttributes) ra;
