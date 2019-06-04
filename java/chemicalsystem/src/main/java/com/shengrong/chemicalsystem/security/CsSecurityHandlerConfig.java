@@ -2,7 +2,7 @@ package com.shengrong.chemicalsystem.security;
 
 import com.alibaba.fastjson.JSON;
 import com.shengrong.chemicalsystem.constant.CommonConstant;
-import com.shengrong.chemicalsystem.constant.enums.ExceptionCodeEnum;
+import com.shengrong.chemicalsystem.ecxeption.ExceptionCodeEnum;
 import com.shengrong.chemicalsystem.model.dto.LoginDTO;
 import com.shengrong.chemicalsystem.model.dto.ResponseDTO;
 import com.shengrong.chemicalsystem.model.entity.UserInfoEntity;
@@ -15,6 +15,10 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 @Slf4j
 @Configuration
 public class CsSecurityHandlerConfig {
@@ -35,6 +39,7 @@ public class CsSecurityHandlerConfig {
             String token = TokenUtils.createToken(principal.getId());
             log.info("token={}", token);
             dto.setToken(token);
+            dto.setCode("success");
             dto.setDesc("登录成功");
             response.getWriter().write(JSON.toJSONString(dto));
             response.getWriter().flush();
@@ -52,6 +57,7 @@ public class CsSecurityHandlerConfig {
             ResponseDTO dto = new ResponseDTO();
             dto.setCode(ExceptionCodeEnum.CS003.getCode());
             dto.setDesc(e.getMessage());
+            response.setStatus(200);
             response.getWriter().write(JSON.toJSONString(dto));
             response.getWriter().flush();
         });
@@ -84,13 +90,24 @@ public class CsSecurityHandlerConfig {
     public AccessDeniedHandler accessDeniedHandler(){
         return ((request, response, accessDeniedException) -> {
             ResponseDTO dto = new ResponseDTO();
-            dto.setCode("权限不足");
+            dto.setCode("NOT_PERMISSION");
             dto.setDesc("权限不足");
-            String jsonString = JSON.toJSONString(dto);
-            response.setContentType(CommonConstant.JSON_CONTENT_TYPE);
-            response.getWriter().write(jsonString);
-            response.getWriter().flush();
+            setResponse(response, dto);
         });
+    }
+
+    /**
+     * 设置前端相应
+     * @param response response
+     * @param dto dto
+     * @throws IOException IOException
+     */
+    private void setResponse(HttpServletResponse response, ResponseDTO dto) throws IOException {
+        String jsonString = JSON.toJSONString(dto);
+        response.setStatus(200);
+        response.setContentType(CommonConstant.JSON_CONTENT_TYPE);
+        response.getWriter().write(jsonString);
+        response.getWriter().flush();
     }
 
     /**
@@ -101,12 +118,9 @@ public class CsSecurityHandlerConfig {
     public AuthenticationEntryPoint authenticationEntryPoint(){
         return ((request, response, authException) -> {
             ResponseDTO dto = new ResponseDTO();
-            dto.setCode("未登录");
+            dto.setCode("NOT_LOGIN");
             dto.setDesc("未登录");
-            String jsonString = JSON.toJSONString(dto);
-            response.setContentType(CommonConstant.JSON_CONTENT_TYPE);
-            response.getWriter().write(jsonString);
-            response.getWriter().flush();
+            setResponse(response, dto);
         });
     }
 

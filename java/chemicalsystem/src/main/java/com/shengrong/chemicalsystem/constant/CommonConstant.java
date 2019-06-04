@@ -2,7 +2,7 @@ package com.shengrong.chemicalsystem.constant;
 
 public interface CommonConstant {
 
-    long DEF_EXPIRE_TIME = 60 * 60 * 1000;
+    long DEF_EXPIRE_TIME = 2 * 60 * 60 * 1000;
 
     String SUCCESS = "SUCCESS";
 

@@ -28,7 +28,7 @@ public class UserInfoEntity extends BaseEntity implements UserDetails, Serializa
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("VIP");
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("admin");
         return Collections.singletonList(authority);
     }
 

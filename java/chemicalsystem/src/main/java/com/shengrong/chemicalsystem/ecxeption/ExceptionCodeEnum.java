@@ -1,4 +1,4 @@
-package com.shengrong.chemicalsystem.constant.enums;
+package com.shengrong.chemicalsystem.ecxeption;
 
 import lombok.Getter;
 

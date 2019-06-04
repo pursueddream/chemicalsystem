@@ -1,6 +1,6 @@
 package com.shengrong.chemicalsystem.config;
 
-import com.shengrong.chemicalsystem.constant.enums.ExceptionCodeEnum;
+import com.shengrong.chemicalsystem.ecxeption.ExceptionCodeEnum;
 import com.shengrong.chemicalsystem.ecxeption.ChemicalException;
 import com.shengrong.chemicalsystem.model.dto.ResponseDTO;
 import lombok.extern.slf4j.Slf4j;

@@ -1,21 +1,21 @@
 package com.shengrong.chemicalsystem.utils;
 
-import com.shengrong.chemicalsystem.constant.enums.ExceptionCodeEnum;
 import com.shengrong.chemicalsystem.ecxeption.ChemicalException;
+import com.shengrong.chemicalsystem.ecxeption.ExceptionCodeEnum;
 import org.apache.commons.codec.binary.Base64;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import java.security.InvalidKeyException;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.security.*;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.RSAPublicKeySpec;
 
 public class RSAUtils {
+    private static final Provider PROVIDER = new BouncyCastleProvider();
     private static final String RSA = "RSA";
     private static final int KEY_SIZE = 1024;
     private static final PublicKey PUBLIC_KEY;
@@ -47,8 +47,8 @@ public class RSAUtils {
         return new String(result);
     }
 
-    public static PublicKey getPublicKey(){
-        return PUBLIC_KEY;
+    public static RSAPublicKey getPublicKey() {
+        return (RSAPublicKey)PUBLIC_KEY;
     }
 
 

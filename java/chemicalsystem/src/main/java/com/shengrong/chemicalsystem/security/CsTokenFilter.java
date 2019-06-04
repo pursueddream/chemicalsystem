@@ -17,6 +17,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import static com.shengrong.chemicalsystem.utils.TokenUtils.getIdByToken;
+
 @Component
 @Slf4j
 public class CsTokenFilter extends OncePerRequestFilter {
@@ -34,7 +37,7 @@ public class CsTokenFilter extends OncePerRequestFilter {
         //认证
         if (!StringUtils.isEmpty(token)) {
             //解密token
-            String userInfoId = TokenUtils.getIdByToken(token);
+            String userInfoId = getIdByToken(token);
             UserInfoEntity userInfoEntity = userInfoServiceImpl.queryById(userInfoId);
             UsernamePasswordAuthenticationToken authentication
                     = new UsernamePasswordAuthenticationToken(userInfoEntity, null, userInfoEntity.getAuthorities());

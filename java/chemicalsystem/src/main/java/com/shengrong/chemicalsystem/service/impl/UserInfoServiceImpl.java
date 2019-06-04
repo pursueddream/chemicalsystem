@@ -5,12 +5,15 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.shengrong.chemicalsystem.dao.UserInfoDao;
 import com.shengrong.chemicalsystem.model.entity.UserInfoEntity;
 import com.shengrong.chemicalsystem.service.UserInfoService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 public class UserInfoServiceImpl extends AbstractBaseService<UserInfoEntity> implements UserInfoService {
 
     private final UserInfoDao userInfoDao;
@@ -29,7 +32,12 @@ public class UserInfoServiceImpl extends AbstractBaseService<UserInfoEntity> imp
         entity.setUsername(name);
         Wrapper<UserInfoEntity> wrapper = new EntityWrapper<>(entity);
         List<UserInfoEntity> list = userInfoDao.selectList(wrapper);
+        if (list.isEmpty()) {
+            log.error("账号或者密码错误");
+            throw new BadCredentialsException("账号或者密码错误");
+        }
         return list.get(0);
+
     }
 
     @Override
