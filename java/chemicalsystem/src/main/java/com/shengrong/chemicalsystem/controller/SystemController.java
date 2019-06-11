@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.interfaces.RSAPublicKey;
 
 @RestController
+@RequestMapping("/api/v1")
 public class SystemController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/system/publicKey")

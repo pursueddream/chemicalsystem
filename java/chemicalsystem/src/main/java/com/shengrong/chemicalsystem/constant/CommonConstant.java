@@ -6,9 +6,9 @@ public interface CommonConstant {
 
     String SUCCESS = "SUCCESS";
 
-    String LOGIN = "/login";
+    String LOGIN = "/api/v1/login";
 
-    String LOGOUT = "/logout";
+    String LOGOUT = "/api/v1/logout";
 
     String AUTHORIZATION = "Authorization";
 

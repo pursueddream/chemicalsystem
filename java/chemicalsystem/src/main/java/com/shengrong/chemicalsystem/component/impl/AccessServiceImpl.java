@@ -17,7 +17,12 @@ public class AccessServiceImpl implements AccessService {
     @Override
     public boolean accessAvailable(HttpServletRequest request, Authentication authentication) {
         String uri = request.getRequestURI();
-        if (uri.startsWith("/system")) {
+        log.info("==========================================");
+        log.info("request.getRequestURL()={}",request.getRequestURL());
+        log.info("request.getRequestURI()={}",request.getRequestURI());
+        log.info("request.getServletPath()={}",request.getServletPath());
+        log.info("==========================================");
+        if (uri.startsWith("/api/v1/system")) {
             return true;
         }
         List<String> roles = authentication.getAuthorities().stream().map( x -> ((GrantedAuthority) x).getAuthority()).collect(Collectors.toList());
@@ -27,7 +32,7 @@ public class AccessServiceImpl implements AccessService {
         }
         //其他请求分别进行处理
         if(authentication.getPrincipal() instanceof UserInfoEntity){
-            return uri.startsWith("/user");
+            return uri.startsWith("/api/v1/user");
         }
 
         return false;

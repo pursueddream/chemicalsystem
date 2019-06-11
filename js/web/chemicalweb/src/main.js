@@ -21,7 +21,7 @@ Vue.use(iView);
 * 增加请求拦截器
 */
 axios.interceptors.request.use((config) => {
-  if(config.url === "/login" || config.url === "/system/publicKey") {
+  if(config.url === "/api/v1/login" || config.url === "/api/v1/system/publicKey") {
     config.headers = {
       "withCredentials" : true
     };

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
+@RequestMapping("/api/v1")
 public class UserInfoController {
 
     private final UserInfoService userInfoService;

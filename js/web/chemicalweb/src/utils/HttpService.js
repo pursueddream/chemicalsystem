@@ -1,10 +1,13 @@
 import axios from 'axios'
 import Vue from 'vue'
 
+const baseUrl = "/api/v1";
+
+
 export default {
   getPublicKey(){
     const config= {
-      url : "/system/publicKey",
+      url : baseUrl + "/system/publicKey",
       method : "get"
     };
     return axios.request(config);
@@ -12,7 +15,7 @@ export default {
 
   login(username, password){
     const config= {
-      url : "/login",
+      url : baseUrl + "/login",
       params : {
         username : username,
         password : password
@@ -24,7 +27,7 @@ export default {
 
   get(url, params){
     const config= {
-      url : url,
+      url : baseUrl + url,
       params : params,
       method : "get",
     };
@@ -33,7 +36,7 @@ export default {
 
   post(url, data){
     const config= {
-      url : url,
+      url : baseUrl + url,
       data : data,
       method : "post"
     };
@@ -42,7 +45,7 @@ export default {
 
   put(url, data){
     const config= {
-      url : url,
+      url : baseUrl + url,
       data : data,
       method : "put"
     };
@@ -51,7 +54,7 @@ export default {
 
   delete(url, data){
     const config= {
-      url : url,
+      url : baseUrl + url,
       data : data,
       method : "delete"
     };
