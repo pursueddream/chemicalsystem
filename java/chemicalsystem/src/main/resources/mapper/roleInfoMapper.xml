@@ -1,0 +1,35 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shengrong.chemicalsystem.dao.RoleInfoDao">
+    <select id="getRolesByUserId" parameterType="java.lang.String"
+            resultMap="roleMap">
+            select
+            u.id userId,
+            u.`username` userName,
+            r.id roleId,
+            r.`name` roleName,
+            p.id permissionId,
+            p.`name` permissionName,
+            p.resource resource,
+            p.method method
+            from       user_info  u
+            left join user_role_rel  url
+            on u.id = url.user_id
+            left join  role_info r
+            on url.role_id = r.id
+            left join role_permission_rel  rpr
+            on r.id = rpr.role_id
+            left join   permission_info p
+            on rpr.permission_id = p.id
+            where u.id = #{id}
+    </select>
+    <resultMap id="roleMap" type="com.shengrong.chemicalsystem.model.dto.role.RoleDTO">
+        <id property="id" column="roleId"/>
+        <result property="name" column="roleName" />
+        <collection property="permissions" ofType="com.shengrong.chemicalsystem.model.dto.role.PermissionDTO">
+            <id property="id" column="permissionId"/>
+            <result property="name" column="permissionName"/>
+            <result property="resource" column="resource"/>
+            <result property="method" column="method" />
+        </collection>
+    </resultMap>
+</mapper>

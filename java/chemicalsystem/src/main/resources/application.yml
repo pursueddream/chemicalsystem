@@ -15,7 +15,7 @@ spring:
     username: XUEKE274
     password: admin
 
-mybatis:
+mybatis-plus:
   mapperLocations: classpath:mapper/*.xml
 logging:
   config: classpath:config/logback.xml

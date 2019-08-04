@@ -6,18 +6,20 @@ import com.shengrong.chemicalsystem.model.entity.commom.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
-@TableName("user_info")
+
 @Getter
 @Setter
 @ToString
+@Slf4j
+@TableName("user_info")
 public class UserInfoEntity extends BaseEntity implements UserDetails, Serializable {
 
     @TableField("username")
@@ -25,11 +27,9 @@ public class UserInfoEntity extends BaseEntity implements UserDetails, Serializa
 
     @TableField("password")
     private String password;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("admin");
-        return Collections.singletonList(authority);
+        return new ArrayList<>();
     }
 
     @Override
@@ -51,4 +51,5 @@ public class UserInfoEntity extends BaseEntity implements UserDetails, Serializa
     public boolean isEnabled() {
         return true;
     }
+
 }

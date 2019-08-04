@@ -7,7 +7,6 @@ import com.shengrong.chemicalsystem.model.entity.commom.PageEntity;
 import com.shengrong.chemicalsystem.service.UserInfoService;
 import com.shengrong.chemicalsystem.utils.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -22,7 +21,7 @@ public class UserInfoController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/user")
-    public PageResultResponse<UserInfoEntity> getPage(UserInfoRequest request){
+    public Object getPage(UserInfoRequest request){
 
         UserInfoEntity userInfoEntity = new UserInfoEntity();
         userInfoEntity.setUsername(request.getUsername());
@@ -31,12 +30,14 @@ public class UserInfoController {
         pageEntity.setPageNumber(request.getPageNumber());
         pageEntity.setPageSize(request.getPageSize());
 
-        return userInfoService.queryPage(userInfoEntity, pageEntity);
+        PageResultResponse<UserInfoEntity> response = userInfoService.queryPage(userInfoEntity, pageEntity);
+        return ResponseUtils.getDataResponse(response);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/user/{id}")
-    public UserInfoEntity queryById(@PathVariable("id") String id){
-        return userInfoService.queryById(id);
+    public Object queryById(@PathVariable("id") String id){
+        UserInfoEntity entity = userInfoService.queryById(id);
+        return ResponseUtils.getDataResponse(entity);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/user")
@@ -46,7 +47,7 @@ public class UserInfoController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/user/{id}")
-    public Object modifyById(@PathVariable("id") String id, @RequestBody UserInfoEntity entity){
+    public Object modifyById(@RequestBody UserInfoEntity entity, @PathVariable("id") String id){
         entity.setId(id);
         userInfoService.updateById(entity);
         return ResponseUtils.getDefResponse();

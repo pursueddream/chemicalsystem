@@ -13,4 +13,6 @@ public interface CommonConstant {
     String AUTHORIZATION = "Authorization";
 
     String JSON_CONTENT_TYPE = "application/json;charset=UTF-8";
+
+    String FLOW_ID = "flowId";
 }

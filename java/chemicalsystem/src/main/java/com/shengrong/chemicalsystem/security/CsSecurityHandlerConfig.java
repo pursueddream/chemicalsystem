@@ -4,10 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.shengrong.chemicalsystem.constant.CommonConstant;
 import com.shengrong.chemicalsystem.ecxeption.ExceptionCodeEnum;
 import com.shengrong.chemicalsystem.model.dto.LoginDTO;
-import com.shengrong.chemicalsystem.model.dto.ResponseDTO;
+import com.shengrong.chemicalsystem.controller.response.common.CommonResponse;
 import com.shengrong.chemicalsystem.model.entity.UserInfoEntity;
 import com.shengrong.chemicalsystem.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -54,7 +55,7 @@ public class CsSecurityHandlerConfig {
     public AuthenticationFailureHandler authenticationFailureHandler(){
         return ((request, response, e) -> {
             response.setContentType(CommonConstant.JSON_CONTENT_TYPE);
-            ResponseDTO dto = new ResponseDTO();
+            CommonResponse dto = new CommonResponse();
             dto.setCode(ExceptionCodeEnum.CS003.getCode());
             dto.setDesc(e.getMessage());
             response.setStatus(200);
@@ -72,7 +73,7 @@ public class CsSecurityHandlerConfig {
         return ((request, response, authentication) -> {
 
             // 删除token  todo
-            ResponseDTO dto = new ResponseDTO();
+            CommonResponse dto = new CommonResponse();
             dto.setCode("退出成功");
             dto.setDesc("退出成功");
             String jsonString = JSON.toJSONString(dto);
@@ -89,7 +90,7 @@ public class CsSecurityHandlerConfig {
     @Bean
     public AccessDeniedHandler accessDeniedHandler(){
         return ((request, response, accessDeniedException) -> {
-            ResponseDTO dto = new ResponseDTO();
+            CommonResponse dto = new CommonResponse();
             dto.setCode("NOT_PERMISSION");
             dto.setDesc("权限不足");
             setResponse(response, dto);
@@ -102,7 +103,8 @@ public class CsSecurityHandlerConfig {
      * @param dto dto
      * @throws IOException IOException
      */
-    private void setResponse(HttpServletResponse response, ResponseDTO dto) throws IOException {
+    private void setResponse(HttpServletResponse response, CommonResponse dto) throws IOException {
+        dto.setFlowId(MDC.get(CommonConstant.FLOW_ID));
         String jsonString = JSON.toJSONString(dto);
         response.setStatus(200);
         response.setContentType(CommonConstant.JSON_CONTENT_TYPE);
@@ -117,7 +119,7 @@ public class CsSecurityHandlerConfig {
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint(){
         return ((request, response, authException) -> {
-            ResponseDTO dto = new ResponseDTO();
+            CommonResponse dto = new CommonResponse();
             dto.setCode("NOT_LOGIN");
             dto.setDesc("未登录");
             setResponse(response, dto);

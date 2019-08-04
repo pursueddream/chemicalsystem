@@ -7,23 +7,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-
 @Getter
 @Setter
 @ToString
-@TableName("order_info")
-public class OrderEntity  extends BaseEntity {
-
-    //订单名称
-    @TableField("name")
-    private String name;
-
-    //订单编号
-    @TableField("order_no")
-    private String orderNo;
-
-    //订单类型
-    @TableField("type")
-    private String type;
-
+@TableName("user_role_rel")
+public class UserRoleRelEntity extends BaseEntity {
+    @TableField("user_id")
+    private String userId;
+    @TableField("role_id")
+    private String roleId;
 }

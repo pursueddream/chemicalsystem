@@ -11,6 +11,7 @@ public enum  ExceptionCodeEnum {
     CS003("CS003", "账号或者密码错误"),
     CS004("CS004", "token加密失败"),
     CS005("CS005", "token检验失败"),
+    CS006("CS006", "用户已经被创建"),
     ;
 
     private String code;

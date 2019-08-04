@@ -11,19 +11,13 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@TableName("order_info")
-public class OrderEntity  extends BaseEntity {
-
-    //订单名称
+@TableName("permission_info")
+public class PermissionInfoEntity extends BaseEntity {
     @TableField("name")
     private String name;
-
-    //订单编号
-    @TableField("order_no")
-    private String orderNo;
-
-    //订单类型
-    @TableField("type")
-    private String type;
+    @TableField("resource")
+    private String resource;
+    @TableField("method")
+    private String method;
 
 }

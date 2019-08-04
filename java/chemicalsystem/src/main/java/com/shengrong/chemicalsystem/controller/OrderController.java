@@ -1,10 +1,8 @@
 package com.shengrong.chemicalsystem.controller;
 
 import com.shengrong.chemicalsystem.controller.request.OrderRequest;
-import com.shengrong.chemicalsystem.controller.request.UserInfoRequest;
 import com.shengrong.chemicalsystem.controller.response.common.PageResultResponse;
 import com.shengrong.chemicalsystem.model.entity.OrderEntity;
-import com.shengrong.chemicalsystem.model.entity.UserInfoEntity;
 import com.shengrong.chemicalsystem.model.entity.commom.PageEntity;
 import com.shengrong.chemicalsystem.service.OrderService;
 import com.shengrong.chemicalsystem.utils.ResponseUtils;
@@ -23,7 +21,7 @@ public class OrderController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/order")
-    public PageResultResponse<OrderEntity> getPage(OrderRequest request){
+    public Object getPage(OrderRequest request){
 
         OrderEntity entity = new OrderEntity();
         entity.setName(request.getName());
@@ -31,12 +29,12 @@ public class OrderController {
         PageEntity pageEntity = new PageEntity();
         pageEntity.setPageNumber(request.getPageNumber());
         pageEntity.setPageSize(request.getPageSize());
-
-        return orderService.queryPage(entity, pageEntity);
+        PageResultResponse<OrderEntity> response = orderService.queryPage(entity, pageEntity);
+        return ResponseUtils.getDataResponse(response);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/order/{id}")
-    public OrderEntity queryById(@PathVariable("id") String id){
+    public Object queryById(@PathVariable("id") String id){
         return orderService.queryById(id);
     }
 
@@ -47,7 +45,7 @@ public class OrderController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/order/{id}")
-    public Object modifyById(@PathVariable("id") String id, @RequestBody OrderEntity entity){
+    public Object modifyById(@RequestBody OrderEntity entity, @PathVariable("id") String id){
         entity.setId(id);
         orderService.updateById(entity);
         return ResponseUtils.getDefResponse();

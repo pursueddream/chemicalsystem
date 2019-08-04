@@ -39,8 +39,8 @@ public class CsSecurityProvider extends DaoAuthenticationProvider {
         String inscriptionPassword;
         try {
             //正式环境中放开
-            inscriptionPassword = RSAUtils.decrypt(password);
-//            inscriptionPassword = password;
+//            inscriptionPassword = RSAUtils.decrypt(password);
+            inscriptionPassword = password;
         } catch (Exception e) {
             log.error("账号或者密码错误", e);
             throw new BadCredentialsException("账号或者密码错误");
