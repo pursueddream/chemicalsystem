@@ -8,6 +8,14 @@ import lombok.ToString;
 @Setter
 @ToString
 public class PageEntity {
-    private int pageSize;
     private int pageNumber;
+    private int pageSize;
+
+    public PageEntity() {
+    }
+
+    public PageEntity(int pageNumber, int pageSize) {
+        this.pageNumber = pageNumber;
+        this.pageSize = pageSize;
+    }
 }

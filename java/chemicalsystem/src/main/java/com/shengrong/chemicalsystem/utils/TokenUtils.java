@@ -5,7 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.shengrong.chemicalsystem.constant.CommonConstant;
-import com.shengrong.chemicalsystem.constant.enums.ExceptionCodeEnum;
+import com.shengrong.chemicalsystem.ecxeption.ExceptionCodeEnum;
 import com.shengrong.chemicalsystem.ecxeption.ChemicalException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,7 +41,7 @@ public class TokenUtils {
 
     }
 
-    public static String getIdByToken(String token){
+    public static String getIdByToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(SECRET);
             JWTVerifier verifier = JWT.require(algorithm)

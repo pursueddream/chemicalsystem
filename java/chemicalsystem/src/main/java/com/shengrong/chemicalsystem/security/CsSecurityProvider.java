@@ -1,5 +1,6 @@
 package com.shengrong.chemicalsystem.security;
 
+import com.shengrong.chemicalsystem.utils.RSAUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -45,7 +46,8 @@ public class CsSecurityProvider extends DaoAuthenticationProvider {
             throw new BadCredentialsException("账号或者密码错误");
         }
         //数据库密码与铭文密码进行校验
-        if(bCryptPasswordEncoder.matches(inscriptionPassword, password)) {
+        if(!bCryptPasswordEncoder.matches(inscriptionPassword, dbPassword)) {
+            log.error("账号或者密码错误");
             throw new BadCredentialsException("账号或者密码错误");
         }
     }

@@ -1,6 +1,5 @@
 package com.shengrong.chemicalsystem.ecxeption;
 
-import com.shengrong.chemicalsystem.constant.enums.ExceptionCodeEnum;
 import lombok.Getter;
 
 @Getter
